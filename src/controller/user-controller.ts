@@ -1,5 +1,5 @@
 import { getRepository } from "typeorm";
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { User } from "../entity/user";
 import { validate, Validate } from "class-validator";
 
@@ -62,7 +62,6 @@ export class UserController {
   };
 
   static modifyUser = async (request: Request, response: Response) => {
-    console.log(request.params);
     const { id } = request.params;
     const { username, role } = request.body;
     const userRepository = getRepository(User);

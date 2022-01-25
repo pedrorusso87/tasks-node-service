@@ -61,7 +61,8 @@ export class UserController {
     response.status(201).json({ message: "User created" });
   };
 
-  static modifyUser = async (response: Response, request: Request) => {
+  static modifyUser = async (request: Request, response: Response) => {
+    console.log(request.params);
     const { id } = request.params;
     const { username, role } = request.body;
     const userRepository = getRepository(User);
@@ -97,7 +98,7 @@ export class UserController {
     });
   };
 
-  static deleteUser = async (response: Response, request: Request) => {
+  static deleteUser = async (request: Request, response: Response) => {
     const { id } = request.params;
     const userRepository = getRepository(User);
     let user: User;

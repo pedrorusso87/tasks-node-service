@@ -5,8 +5,10 @@ import {
   Unique,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm";
 import { MinLength, IsNotEmpty, Min } from "class-validator";
+import { Task } from "./task";
 @Entity()
 @Unique(["username"])
 export class User {
@@ -31,4 +33,7 @@ export class User {
   @Column()
   @UpdateDateColumn()
   modifiedDate: Date;
+
+  @OneToMany(() => Task, (task) => task.responsible)
+  tasks: Task[];
 }

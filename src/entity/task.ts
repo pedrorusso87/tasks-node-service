@@ -5,36 +5,42 @@ import {
   CreateDateColumn,
   OneToOne,
   JoinColumn,
+  ManyToOne,
 } from "typeorm";
 import { MinLength, IsNotEmpty, Min } from "class-validator";
 import { Status } from "./status";
 import { Priority } from "./priority";
+import { User } from "./user";
 
 @Entity("tasks")
 export class Task {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  username: string;
+  @ManyToOne(() => User, (user) => user.tasks)
+  @JoinColumn({ name: "responsible_id" })
+  responsible: User;
 
-  @Column()
-  @MinLength(6)
-  password: string;
+  @ManyToOne(() => User, (user) => user.tasks)
+  @JoinColumn({ name: "created_by" })
+  createdBy: User;
 
   @Column()
   @IsNotEmpty()
-  role: string;
+  description: string;
+
+  @Column({ name: "due_date" })
+  dueDate: Date;
 
   @Column()
   @CreateDateColumn()
-  createdDate: Date;
+  created_date: Date;
 
-  @OneToOne(() => Status)
-  @JoinColumn()
+  @ManyToOne(() => Status)
+  @JoinColumn({ name: "status_id" })
   status: Status;
 
-  @OneToOne(() => Priority)
-  @JoinColumn()
+  @ManyToOne(() => Priority)
+  @JoinColumn({ name: "priority_id" })
   priority: Priority;
 }

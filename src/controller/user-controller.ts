@@ -1,7 +1,7 @@
 import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 import { User } from "../entity/user";
-import { validate, Validate } from "class-validator";
+import { validate } from "class-validator";
 
 export class UserController {
   static getAll = async (request: Request, response: Response) => {

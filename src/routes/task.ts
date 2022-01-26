@@ -7,4 +7,6 @@ router.get("/", TaskController.getAll);
 
 router.post("/", TaskController.createTask);
 
+router.patch("/:id", TaskController.updateTask);
+
 export default router;

@@ -18,7 +18,7 @@ export class User {
   @Column()
   username: string;
 
-  @Column()
+  @Column({ select: false })
   @MinLength(6)
   password: string;
 
@@ -27,11 +27,11 @@ export class User {
   role: string;
 
   @Column()
-  @CreateDateColumn()
+  @CreateDateColumn({ select: false })
   createdDate: Date;
 
   @Column()
-  @UpdateDateColumn()
+  @UpdateDateColumn({ select: false })
   modifiedDate: Date;
 
   @OneToMany(() => Task, (task) => task.responsible)

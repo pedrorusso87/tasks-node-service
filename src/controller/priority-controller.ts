@@ -15,7 +15,6 @@ export class PriorityController {
         return response.status(404).json({ message: "No priorities found." });
       }
     } catch (e) {
-      console.log(response);
       return response.status(500).json({
         message: "There was an error in the application.",
       });

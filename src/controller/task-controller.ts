@@ -1,5 +1,6 @@
 import { validate } from "class-validator";
-import { request, Request, Response } from "express";
+import { Request, Response } from "express";
+import moment = require("moment");
 import { getRepository } from "typeorm";
 import { Task } from "../entity/task";
 
@@ -12,16 +13,20 @@ export class TaskController {
         relations: ["responsible", "status", "priority"],
       });
       if (tasks.length > 0) {
-        //Delete all ids from response
-        tasks.map((task) => {
-          console.log(task.status);
+        getTasksResponse = tasks;
+        getTasksResponse.map((task) => {
+          // deleting ids from response
           delete task.id;
           delete task.responsible.id;
           delete task.status.id;
           delete task.priority.id;
+
+          //formatting dates
+          task.dueDate = moment(task.dueDate).format("YYYY-MM-DD");
+          task.created_date = moment(task.created_date).format("YYYY-MM-DD");
         });
 
-        response.send(tasks);
+        response.send(getTasksResponse);
       } else {
         return response.status(404).json({ message: "No tasks found." });
       }
@@ -66,6 +71,18 @@ export class TaskController {
     response.status(201).json({ message: "Task created" });
   };
 
-  static updateTask;
+  static updateTask = async (request: Request, response: Response) => {
+    const { id } = request.params;
+    const { responsible, dueDate, priority, status } = request.body;
+    const repository = getRepository(Task);
+    let task: Task;
+    try {
+      task = await repository.findOneOrFail(id);
+    } catch (e) {
+      return response.status(404).json({
+        message: "Task not found.",
+      });
+    }
+  };
 }
 export default TaskController;

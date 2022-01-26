@@ -7,7 +7,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from "typeorm";
-import { MinLength, IsNotEmpty, Min } from "class-validator";
+import { MinLength, IsNotEmpty, Min, IsNumber } from "class-validator";
 import { Status } from "./status";
 import { Priority } from "./priority";
 import { User } from "./user";
@@ -38,9 +38,11 @@ export class Task {
 
   @ManyToOne(() => Status)
   @JoinColumn({ name: "status_id" })
+  @IsNotEmpty()
   status: Status;
 
   @ManyToOne(() => Priority)
   @JoinColumn({ name: "priority_id" })
+  @IsNotEmpty()
   priority: Priority;
 }

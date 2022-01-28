@@ -33,7 +33,7 @@
   "scripts": {
     "start": "node build/index.js",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
-    "tsc": "tsc",
+    "tsc": "./node_modules/typescript/bin/tsc",
     "postinstall": "npm run tsc",
     "dev": "set debug=* && ts-node-dev --respawn --transpile-only ./src/index.ts"
   }

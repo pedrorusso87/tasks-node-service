@@ -1,5 +1,5 @@
 import { validate } from "class-validator";
-import { Request, Response } from "express";
+import { request, Request, Response } from "express";
 import moment = require("moment");
 import { getRepository } from "typeorm";
 import { Task } from "../entity/task";
@@ -22,9 +22,35 @@ export class TaskController {
       }
     } catch (e) {
       return response.status(500).json({
-        message: "There was an error in the application.",
+        message: "There was an error in the application. " + e,
       });
     }
+  };
+
+  static deleteTask = async (request: Request, response: Response) => {
+    const taskRepository = getRepository(Task);
+    const { id } = request.params;
+    let task: Task;
+
+    try {
+      task = await taskRepository.findOneOrFail(id);
+    } catch (e) {
+      return response.status(404).json({
+        message: "Task not found.",
+      });
+    }
+
+    //delete task
+    try {
+      taskRepository.delete(id);
+    } catch (e) {
+      return response.status(500).json({
+        message: "Could not delete taks. " + e,
+      });
+    }
+    return response.status(200).json({
+      message: "Task deleted successfully.",
+    });
   };
 
   static createTask = async (request: Request, response: Response) => {
@@ -50,7 +76,7 @@ export class TaskController {
       await repository.save(task);
     } catch (e) {
       return response.status(500).json({
-        message: "Error creating new task.",
+        message: "Error creating new task. " + e,
       });
     }
 
@@ -97,7 +123,7 @@ export class TaskController {
       await taskRepository.save(task);
     } catch (e) {
       return response.status(500).json({
-        message: "Task update failed.",
+        message: "Task update failed. " + e,
       });
     }
 

@@ -29,7 +29,7 @@ export class Task {
   @IsNotEmpty()
   description: string;
 
-  @Column({ name: "due_date" })
+  @Column({ name: "due_date", nullable: true })
   dueDate: Date;
 
   @Column()

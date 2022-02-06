@@ -135,7 +135,6 @@ export class TaskController {
   static parseTaskResponse = (taskList) => {
     taskList.map((task) => {
       // deleting ids from response
-      delete task.id;
       delete task.responsible.id;
       delete task.status.id;
       delete task.priority.id;

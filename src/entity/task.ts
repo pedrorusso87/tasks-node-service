@@ -32,9 +32,9 @@ export class Task {
   @Column({ name: "due_date", nullable: true })
   dueDate: Date;
 
-  @Column()
+  @Column({ name: "due_date" })
   @CreateDateColumn()
-  created_date: Date;
+  createdDate: Date;
 
   @ManyToOne(() => Status)
   @JoinColumn({ name: "status_id" })

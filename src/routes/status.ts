@@ -7,4 +7,6 @@ router.get("/", StatusController.getAll);
 
 router.patch("/:id", StatusController.modifyStatus);
 
+router.post("/", StatusController.addStatus);
+
 export default router;

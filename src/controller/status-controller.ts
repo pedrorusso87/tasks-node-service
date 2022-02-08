@@ -56,6 +56,41 @@ export class StatusController {
       message: "Status updated.",
     });
   };
+
+  static addStatus = async (request: Request, response: Response) => {
+    const statusRepository = getRepository(Status);
+    const { description } = request.body;
+
+    const status = new Status();
+    status.description = description;
+
+    const errors = await validate(status);
+    if (errors.length > 0) {
+      return response.status(400).json(errors);
+    }
+    try {
+      const foundStatus = await statusRepository.findOne({
+        where: { description: description },
+      });
+      if (foundStatus) {
+        return response
+          .status(400)
+          .json({ message: "Ya existe un estado con esa descripcion" });
+      }
+    } catch (e) {
+      return response.status(500).json(e);
+    }
+
+    try {
+      await statusRepository.save(status);
+    } catch (e) {
+      return response.status(500).json({
+        message: "Error creating new status. " + e,
+      });
+    }
+
+    response.status(201).json({ message: "Status created" });
+  };
 }
 
 export default StatusController;

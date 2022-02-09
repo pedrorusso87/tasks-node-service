@@ -1,9 +1,10 @@
 import { validate } from "class-validator";
-import { request, Request, Response } from "express";
+import { Request, Response } from "express";
 import moment = require("moment");
 import { getRepository } from "typeorm";
 import { Task } from "../entity/task";
 import { User } from "../entity/user";
+import { GetTasksByDashboardResponse } from "../responses/tasks-responses";
 
 export class TaskController {
   static getAll = async (request: Request, response: Response) => {
@@ -15,11 +16,31 @@ export class TaskController {
         relations: ["responsible", "status", "priority"],
       });
       if (tasks.length > 0) {
-        getTasksResponse = TaskController.parseTaskResponse(tasks);
+        getTasksResponse = TaskController.parseGetTaskResponse(tasks);
         response.send(getTasksResponse);
       } else {
         return response.status(404).json({ message: "No tasks found." });
       }
+    } catch (e) {
+      return response.status(500).json({
+        message: "There was an error in the application. " + e,
+      });
+    }
+  };
+
+  static getTasksByDashboardId = async (
+    request: Request,
+    response: Response
+  ) => {
+    const repository = getRepository(Task);
+    const id = request.params;
+
+    try {
+      const tasks: Task[] = await repository.find({ dashboard: id });
+
+      return response
+        .status(200)
+        .send(TaskController.parseGetByDashboardResponse(tasks));
     } catch (e) {
       return response.status(500).json({
         message: "There was an error in the application. " + e,
@@ -132,7 +153,7 @@ export class TaskController {
     });
   };
 
-  static parseTaskResponse = (taskList) => {
+  static parseGetTaskResponse = (taskList) => {
     taskList.map((task) => {
       // deleting ids from response
       delete task.responsible.id;
@@ -144,6 +165,22 @@ export class TaskController {
       task.created_date = moment(task.created_date).format("YYYY-MM-DD");
     });
     return taskList;
+  };
+
+  static parseGetByDashboardResponse = (taskList) => {
+    let getTasksResponse = [] as GetTasksByDashboardResponse[];
+    taskList.map((task) => {
+      let taskResponse = {} as GetTasksByDashboardResponse;
+      //formatting dates
+      const dueDate = moment(task.dueDate).format("YYYY-MM-DD:HH:mm");
+      const createdDate = moment(task.created_date).format("YYYY-MM-DD:HH:mm");
+
+      taskResponse.createdDate = createdDate;
+      taskResponse.description = task.description;
+      taskResponse.dueDate = dueDate;
+      getTasksResponse.push(taskResponse);
+    });
+    return getTasksResponse;
   };
 
   static findUserForTaskUpdate = async (responsible: string) => {

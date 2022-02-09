@@ -5,6 +5,8 @@ const router = Router();
 
 router.get("/", TaskController.getAll);
 
+router.get("/:id", TaskController.getTasksByDashboardId);
+
 router.post("/", TaskController.createTask);
 
 router.patch("/:id", TaskController.updateTask);

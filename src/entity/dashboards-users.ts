@@ -11,7 +11,7 @@ import { Dashboard } from "./dashboard";
 import { User } from "./user";
 
 @Entity("dashboards_users")
-// This table is for storing which dashboard has which task.
+// This table is for storing the dashboards per user
 export class DashboardTask {
   @PrimaryGeneratedColumn()
   id: number;

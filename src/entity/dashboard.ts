@@ -5,11 +5,9 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { Task } from "./task";
 import { User } from "./user";
 
 @Entity("dashboards")
@@ -26,14 +24,10 @@ export class Dashboard {
   owner: User;
 
   @Column()
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn()
   createdDate: Date;
 
   @Column()
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn()
   modifiedDate: Date;
-
-  @OneToMany(() => Task, (task) => task.id)
-  @JoinColumn({ name: "task_id" })
-  tasks: Task[];
 }

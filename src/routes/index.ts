@@ -4,6 +4,7 @@ import user from "./user";
 import priorities from "./priority";
 import status from "./status";
 import tasks from "./task";
+import dashboards from "./dashboard";
 
 const routes = Router();
 
@@ -12,5 +13,6 @@ routes.use("/users", user);
 routes.use("/priorities", priorities);
 routes.use("/status", status);
 routes.use("/tasks", tasks);
+routes.use("/dashboards", dashboards);
 
 export default routes;

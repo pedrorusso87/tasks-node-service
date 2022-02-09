@@ -3,14 +3,14 @@ import {
   PrimaryGeneratedColumn,
   Column,
   CreateDateColumn,
-  OneToOne,
   JoinColumn,
   ManyToOne,
 } from "typeorm";
-import { MinLength, IsNotEmpty, Min, IsNumber } from "class-validator";
+import { IsNotEmpty } from "class-validator";
 import { Status } from "./status";
 import { Priority } from "./priority";
 import { User } from "./user";
+import { Dashboard } from "./dashboard";
 
 @Entity("tasks")
 export class Task {
@@ -32,7 +32,7 @@ export class Task {
   @Column({ name: "due_date", nullable: true })
   dueDate: Date;
 
-  @Column({ name: "due_date" })
+  @Column({ name: "created_date" })
   @CreateDateColumn()
   createdDate: Date;
 
@@ -45,4 +45,8 @@ export class Task {
   @JoinColumn({ name: "priority_id" })
   @IsNotEmpty()
   priority: Priority;
+
+  @ManyToOne(() => Dashboard)
+  @JoinColumn({ name: "dashboard_id" })
+  dashboard: Dashboard;
 }

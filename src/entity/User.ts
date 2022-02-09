@@ -9,6 +9,7 @@ import {
 } from "typeorm";
 import { MinLength, IsNotEmpty, Min } from "class-validator";
 import { Task } from "./task";
+import { Dashboard } from "./dashboard";
 @Entity()
 @Unique(["username"])
 export class User {
@@ -27,13 +28,16 @@ export class User {
   role: string;
 
   @Column()
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn({ select: false, name: "created_date" })
   createdDate: Date;
 
   @Column()
-  @UpdateDateColumn({ select: false })
+  @UpdateDateColumn({ select: false, name: "updated_date" })
   modifiedDate: Date;
 
   @OneToMany(() => Task, (task) => task.responsible)
   tasks: Task[];
+
+  @OneToMany(() => Dashboard, (dashboard) => dashboard.owner)
+  dashboardList: Dashboard[];
 }

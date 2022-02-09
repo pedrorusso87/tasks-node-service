@@ -1,7 +1,8 @@
 import { IsNotEmpty } from "class-validator";
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, Unique } from "typeorm";
 
 @Entity()
+@Unique(["description"])
 export class Status {
   @PrimaryGeneratedColumn()
   id: number;

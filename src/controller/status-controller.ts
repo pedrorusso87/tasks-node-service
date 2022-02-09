@@ -68,18 +68,6 @@ export class StatusController {
     if (errors.length > 0) {
       return response.status(400).json(errors);
     }
-    try {
-      const foundStatus = await statusRepository.findOne({
-        where: { description: description },
-      });
-      if (foundStatus) {
-        return response
-          .status(400)
-          .json({ message: "Ya existe un estado con esa descripcion" });
-      }
-    } catch (e) {
-      return response.status(500).json(e);
-    }
 
     try {
       await statusRepository.save(status);

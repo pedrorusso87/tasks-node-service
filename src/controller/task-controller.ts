@@ -174,10 +174,9 @@ export class TaskController {
       //formatting dates
       const dueDate = moment(task.dueDate).format("YYYY-MM-DD:HH:mm");
       const createdDate = moment(task.created_date).format("YYYY-MM-DD:HH:mm");
-
-      taskResponse.createdDate = createdDate;
-      taskResponse.description = task.description;
-      taskResponse.dueDate = dueDate;
+      const description = task.description;
+      const id = task.id;
+      taskResponse = { id, createdDate, description, dueDate };
       getTasksResponse.push(taskResponse);
     });
     return getTasksResponse;

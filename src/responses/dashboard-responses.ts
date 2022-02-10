@@ -8,3 +8,13 @@ export class DashboardListResponse {
     role: string;
   };
 }
+
+export class DashboardByUserResponse {
+  dashboards: DashboardInformation[];
+}
+
+export class DashboardInformation {
+  name: string;
+  createdDate: string;
+  modifiedDate: string;
+}

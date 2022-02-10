@@ -26,6 +26,24 @@ class DashboardController {
     }
   };
 
+  static getDashboardById = async (request: Request, response: Response) => {
+    const dashboardRepository = getRepository(Dashboard);
+    try {
+      const dashboard: Dashboard = await dashboardRepository.findOne(
+        request.params
+      );
+      if (dashboard) {
+        response.send(dashboard);
+      } else {
+        response.status(404).json({ message: "No dashboards found" });
+      }
+    } catch (e) {
+      return response.status(500).json({
+        message: "There was an error in the application. " + e,
+      });
+    }
+  };
+
   static parseTaskResponse = (dashboardList: Dashboard[]) => {
     let dashboardListResponse = [] as DashboardListResponse[];
     dashboardList.map((dashboard) => {

@@ -7,7 +7,6 @@ import {
   DashboardByUserResponse,
   DashboardInformation,
 } from "../responses/dashboard-responses";
-
 export class DashboardUsersController {
   static getDashboardsByUserId = async (
     request: Request,
@@ -25,28 +24,10 @@ export class DashboardUsersController {
           user: userId,
         },
       });
-      console.log(dashboardsUser);
+
       if (dashboardsUser) {
-        const dashboardInformationArray = [];
-        dashboardsUser.map((dashboardUser) => {
-          const dashboard: Dashboard = dashboardUser.dashboard;
-          const name = dashboard.name;
-          const createdDate = moment(dashboard.createdDate).format(
-            "YYYY-MM-DD"
-          );
-          const modifiedDate = moment(dashboard.modifiedDate).format(
-            "YYYY-MM-DD"
-          );
-
-          const dashboardInformation: DashboardInformation = {
-            name,
-            createdDate,
-            modifiedDate,
-          };
-          dashboardInformationArray.push(dashboardInformation);
-        });
-        dashboardByUserResponse.dashboards = dashboardInformationArray;
-
+        dashboardByUserResponse.dashboards =
+          DashboardUsersController.parseDashboardResponse(dashboardsUser);
         response.send(dashboardByUserResponse);
       } else {
         response.status(404).json({ message: "No boards found for user." });
@@ -55,5 +36,23 @@ export class DashboardUsersController {
     } catch (e) {
       response.send(e);
     }
+  };
+
+  static parseDashboardResponse = (dashboardsUser: DashboardUser[]) => {
+    const dashboardInformationArray = [];
+    dashboardsUser.map((dashboardUser) => {
+      const dashboard: Dashboard = dashboardUser.dashboard;
+      const name = dashboard.name;
+      const createdDate = moment(dashboard.createdDate).format("YYYY-MM-DD");
+      const modifiedDate = moment(dashboard.modifiedDate).format("YYYY-MM-DD");
+
+      const dashboardInformation: DashboardInformation = {
+        name,
+        createdDate,
+        modifiedDate,
+      };
+      dashboardInformationArray.push(dashboardInformation);
+    });
+    return dashboardInformationArray;
   };
 }

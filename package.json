@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Awesome project developed with TypeORM.",
   "main": "index.js",
-  "type": "module",
   "engines": {
     "node": "14.16.1"
   },

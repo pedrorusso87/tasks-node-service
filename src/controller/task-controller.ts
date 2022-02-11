@@ -1,6 +1,6 @@
 import { validate } from "class-validator";
 import { Request, Response } from "express";
-import * as moment from "moment";
+const moment = require("moment");
 import { getRepository } from "typeorm";
 import { Task } from "../entity/task";
 import { User } from "../entity/user";

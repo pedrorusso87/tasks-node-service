@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,66 +7,64 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Task = void 0;
-var typeorm_1 = require("typeorm");
-var class_validator_1 = require("class-validator");
-var status_1 = require("./status");
-var priority_1 = require("./priority");
-var user_1 = require("./user");
-var dashboard_1 = require("./dashboard");
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, JoinColumn, ManyToOne, } from "typeorm";
+import { IsNotEmpty } from "class-validator";
+import { Status } from "./status";
+import { Priority } from "./priority";
+import { User } from "./user";
+import { Dashboard } from "./dashboard";
 var Task = /** @class */ (function () {
     function Task() {
     }
     __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
+        PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
     ], Task.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return user_1.User; }, function (user) { return user.tasks; }),
-        (0, typeorm_1.JoinColumn)({ name: "responsible_id" }),
-        __metadata("design:type", user_1.User)
+        ManyToOne(function () { return User; }, function (user) { return user.tasks; }),
+        JoinColumn({ name: "responsible_id" }),
+        __metadata("design:type", User)
     ], Task.prototype, "responsible", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return user_1.User; }, function (user) { return user.tasks; }),
-        (0, typeorm_1.JoinColumn)({ name: "created_by" }),
-        __metadata("design:type", user_1.User)
+        ManyToOne(function () { return User; }, function (user) { return user.tasks; }),
+        JoinColumn({ name: "created_by" }),
+        __metadata("design:type", User)
     ], Task.prototype, "createdBy", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        (0, class_validator_1.IsNotEmpty)(),
+        Column(),
+        IsNotEmpty(),
         __metadata("design:type", String)
     ], Task.prototype, "description", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ name: "due_date", nullable: true }),
+        Column({ name: "due_date", nullable: true }),
         __metadata("design:type", Date)
     ], Task.prototype, "dueDate", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ name: "created_date" }),
-        (0, typeorm_1.CreateDateColumn)(),
+        Column({ name: "created_date" }),
+        CreateDateColumn(),
         __metadata("design:type", Date)
     ], Task.prototype, "createdDate", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return status_1.Status; }),
-        (0, typeorm_1.JoinColumn)({ name: "status_id" }),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", status_1.Status)
+        ManyToOne(function () { return Status; }),
+        JoinColumn({ name: "status_id" }),
+        IsNotEmpty(),
+        __metadata("design:type", Status)
     ], Task.prototype, "status", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return priority_1.Priority; }),
-        (0, typeorm_1.JoinColumn)({ name: "priority_id" }),
-        (0, class_validator_1.IsNotEmpty)(),
-        __metadata("design:type", priority_1.Priority)
+        ManyToOne(function () { return Priority; }),
+        JoinColumn({ name: "priority_id" }),
+        IsNotEmpty(),
+        __metadata("design:type", Priority)
     ], Task.prototype, "priority", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return dashboard_1.Dashboard; }),
-        (0, typeorm_1.JoinColumn)({ name: "dashboard_id" }),
-        __metadata("design:type", dashboard_1.Dashboard)
+        ManyToOne(function () { return Dashboard; }),
+        JoinColumn({ name: "dashboard_id" }),
+        __metadata("design:type", Dashboard)
     ], Task.prototype, "dashboard", void 0);
     Task = __decorate([
-        (0, typeorm_1.Entity)("tasks")
+        Entity("tasks")
     ], Task);
     return Task;
 }());
-exports.Task = Task;
+export { Task };
 //# sourceMappingURL=task.js.map

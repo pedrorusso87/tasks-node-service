@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,11 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DashboardUsersController = void 0;
-var moment = require("moment");
-var typeorm_1 = require("typeorm");
-var dashboards_users_1 = require("../entity/dashboards-users");
+import * as moment from "moment";
+import { getRepository } from "typeorm";
+import { DashboardUser } from "../entity/dashboards-users";
 var DashboardUsersController = /** @class */ (function () {
     function DashboardUsersController() {
     }
@@ -50,7 +47,7 @@ var DashboardUsersController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    repository = (0, typeorm_1.getRepository)(dashboards_users_1.DashboardUser);
+                    repository = getRepository(DashboardUser);
                     userId = request.params;
                     dashboardByUserResponse = {};
                     _b.label = 1;
@@ -100,5 +97,5 @@ var DashboardUsersController = /** @class */ (function () {
     };
     return DashboardUsersController;
 }());
-exports.DashboardUsersController = DashboardUsersController;
+export { DashboardUsersController };
 //# sourceMappingURL=dashboards-users.controller.js.map

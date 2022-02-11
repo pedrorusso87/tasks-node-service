@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,9 +34,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var typeorm_1 = require("typeorm");
-var user_1 = require("../entity/user");
+import { getRepository } from "typeorm";
+import { User } from "../entity/user";
 var AuthController = /** @class */ (function () {
     function AuthController() {
     }
@@ -54,7 +52,7 @@ var AuthController = /** @class */ (function () {
                                 message: "Username and password are required.",
                             })];
                     }
-                    userRepository = (0, typeorm_1.getRepository)(user_1.User);
+                    userRepository = getRepository(User);
                     _c.label = 1;
                 case 1:
                     _c.trys.push([1, 3, , 4]);
@@ -77,5 +75,5 @@ var AuthController = /** @class */ (function () {
     }); };
     return AuthController;
 }());
-exports.default = AuthController;
+export default AuthController;
 //# sourceMappingURL=auth-controller.js.map

@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,10 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var moment = require("moment");
-var typeorm_1 = require("typeorm");
-var dashboard_1 = require("../entity/dashboard");
+import * as moment from "moment";
+import { getRepository } from "typeorm";
+import { Dashboard } from "../entity/dashboard";
 var DashboardController = /** @class */ (function () {
     function DashboardController() {
     }
@@ -49,7 +47,7 @@ var DashboardController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    dashboardRepository = (0, typeorm_1.getRepository)(dashboard_1.Dashboard);
+                    dashboardRepository = getRepository(Dashboard);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -81,7 +79,7 @@ var DashboardController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    dashboardRepository = (0, typeorm_1.getRepository)(dashboard_1.Dashboard);
+                    dashboardRepository = getRepository(Dashboard);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -124,5 +122,5 @@ var DashboardController = /** @class */ (function () {
     };
     return DashboardController;
 }());
-exports.default = DashboardController;
+export default DashboardController;
 //# sourceMappingURL=dashboard-controller.js.map

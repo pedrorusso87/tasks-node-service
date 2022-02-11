@@ -1,10 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var status_controller_1 = require("../controller/status-controller");
-var router = (0, express_1.Router)();
-router.get("/", status_controller_1.default.getAll);
-router.patch("/:id", status_controller_1.default.modifyStatus);
-router.post("/", status_controller_1.default.addStatus);
-exports.default = router;
+import { Router } from "express";
+import StatusController from "../controller/status-controller";
+var router = Router();
+router.get("/", StatusController.getAll);
+router.patch("/:id", StatusController.modifyStatus);
+router.post("/", StatusController.addStatus);
+export default router;
 //# sourceMappingURL=status.js.map

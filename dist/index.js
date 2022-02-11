@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,23 +34,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-require("reflect-metadata");
-var typeorm_1 = require("typeorm");
-var express = require("express");
-var cors = require("cors");
-var helmet_1 = require("helmet");
-var routes_1 = require("./routes");
+import "reflect-metadata";
+import { createConnection } from "typeorm";
+import * as express from "express";
+import * as cors from "cors";
+import helmet from "helmet";
+import routes from "./routes";
 var PORT = process.env.PORT || 3000;
-(0, typeorm_1.createConnection)()
+createConnection()
     .then(function () { return __awaiter(void 0, void 0, void 0, function () {
     var app;
     return __generator(this, function (_a) {
         app = express();
         app.use(cors());
-        app.use((0, helmet_1.default)());
+        app.use(helmet());
         app.use(express.json());
-        app.use("/", routes_1.default);
+        app.use("/", routes);
         app.listen(PORT, function () {
             console.log("Server running on port ".concat(PORT));
         });

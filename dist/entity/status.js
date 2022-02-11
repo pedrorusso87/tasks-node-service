@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,27 +7,25 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Status = void 0;
-var class_validator_1 = require("class-validator");
-var typeorm_1 = require("typeorm");
+import { IsNotEmpty } from "class-validator";
+import { Entity, PrimaryGeneratedColumn, Column, Unique } from "typeorm";
 var Status = /** @class */ (function () {
     function Status() {
     }
     __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
+        PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
     ], Status.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        (0, class_validator_1.IsNotEmpty)(),
+        Column(),
+        IsNotEmpty(),
         __metadata("design:type", String)
     ], Status.prototype, "description", void 0);
     Status = __decorate([
-        (0, typeorm_1.Entity)(),
-        (0, typeorm_1.Unique)(["description"])
+        Entity(),
+        Unique(["description"])
     ], Status);
     return Status;
 }());
-exports.Status = Status;
+export { Status };
 //# sourceMappingURL=status.js.map

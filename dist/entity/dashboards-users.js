@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,44 +7,42 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.DashboardUser = void 0;
-var typeorm_1 = require("typeorm");
-var dashboard_1 = require("./dashboard");
-var user_1 = require("./user");
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
+import { Dashboard } from "./dashboard";
+import { User } from "./user";
 var DashboardUser = /** @class */ (function () {
     // This table is for storing the dashboards per user
     function DashboardUser() {
     }
     __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
+        PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
     ], DashboardUser.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return user_1.User; }),
-        (0, typeorm_1.JoinColumn)({ name: "user_id" }),
-        __metadata("design:type", user_1.User)
+        ManyToOne(function () { return User; }),
+        JoinColumn({ name: "user_id" }),
+        __metadata("design:type", User)
     ], DashboardUser.prototype, "user", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        (0, typeorm_1.CreateDateColumn)({ name: "created_date" }),
+        Column(),
+        CreateDateColumn({ name: "created_date" }),
         __metadata("design:type", Date)
     ], DashboardUser.prototype, "createdDate", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        (0, typeorm_1.UpdateDateColumn)({ name: "updated_date" }),
+        Column(),
+        UpdateDateColumn({ name: "updated_date" }),
         __metadata("design:type", Date)
     ], DashboardUser.prototype, "updatedDate", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return dashboard_1.Dashboard; }),
-        (0, typeorm_1.JoinColumn)({ name: "dashboard_id" }),
-        __metadata("design:type", dashboard_1.Dashboard)
+        ManyToOne(function () { return Dashboard; }),
+        JoinColumn({ name: "dashboard_id" }),
+        __metadata("design:type", Dashboard)
     ], DashboardUser.prototype, "dashboard", void 0);
     DashboardUser = __decorate([
-        (0, typeorm_1.Entity)("dashboards_users")
+        Entity("dashboards_users")
         // This table is for storing the dashboards per user
     ], DashboardUser);
     return DashboardUser;
 }());
-exports.DashboardUser = DashboardUser;
+export { DashboardUser };
 //# sourceMappingURL=dashboards-users.js.map

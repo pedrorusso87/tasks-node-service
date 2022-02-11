@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8,42 +7,40 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Dashboard = void 0;
-var class_validator_1 = require("class-validator");
-var typeorm_1 = require("typeorm");
-var user_1 = require("./user");
+import { IsNotEmpty } from "class-validator";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, } from "typeorm";
+import { User } from "./user";
 var Dashboard = /** @class */ (function () {
     function Dashboard() {
     }
     __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
+        PrimaryGeneratedColumn(),
         __metadata("design:type", Number)
     ], Dashboard.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        (0, class_validator_1.IsNotEmpty)(),
+        Column(),
+        IsNotEmpty(),
         __metadata("design:type", String)
     ], Dashboard.prototype, "name", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return user_1.User; }),
-        (0, typeorm_1.JoinColumn)({ name: "owner_id" }),
-        __metadata("design:type", user_1.User)
+        ManyToOne(function () { return User; }),
+        JoinColumn({ name: "owner_id" }),
+        __metadata("design:type", User)
     ], Dashboard.prototype, "owner", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        (0, typeorm_1.CreateDateColumn)(),
+        Column(),
+        CreateDateColumn(),
         __metadata("design:type", Date)
     ], Dashboard.prototype, "createdDate", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
-        (0, typeorm_1.UpdateDateColumn)(),
+        Column(),
+        UpdateDateColumn(),
         __metadata("design:type", Date)
     ], Dashboard.prototype, "modifiedDate", void 0);
     Dashboard = __decorate([
-        (0, typeorm_1.Entity)("dashboards")
+        Entity("dashboards")
     ], Dashboard);
     return Dashboard;
 }());
-exports.Dashboard = Dashboard;
+export { Dashboard };
 //# sourceMappingURL=dashboard.js.map

@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,13 +34,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.TaskController = void 0;
-var class_validator_1 = require("class-validator");
-var moment = require("moment");
-var typeorm_1 = require("typeorm");
-var task_1 = require("../entity/task");
-var user_1 = require("../entity/user");
+import { validate } from "class-validator";
+import * as moment from "moment";
+import { getRepository } from "typeorm";
+import { Task } from "../entity/task";
+import { User } from "../entity/user";
 var TaskController = /** @class */ (function () {
     function TaskController() {
     }
@@ -52,7 +49,7 @@ var TaskController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    repository = (0, typeorm_1.getRepository)(task_1.Task);
+                    repository = getRepository(Task);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -83,7 +80,7 @@ var TaskController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    repository = (0, typeorm_1.getRepository)(task_1.Task);
+                    repository = getRepository(Task);
                     id = request.params;
                     _b.label = 1;
                 case 1:
@@ -108,7 +105,7 @@ var TaskController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    taskRepository = (0, typeorm_1.getRepository)(task_1.Task);
+                    taskRepository = getRepository(Task);
                     id = request.params.id;
                     _b.label = 1;
                 case 1:
@@ -144,15 +141,15 @@ var TaskController = /** @class */ (function () {
             switch (_c.label) {
                 case 0:
                     _b = request.body, responsible = _b.responsible, createdBy = _b.createdBy, description = _b.description, status = _b.status, priority = _b.priority, dueDate = _b.dueDate;
-                    repository = (0, typeorm_1.getRepository)(task_1.Task);
-                    task = new task_1.Task();
+                    repository = getRepository(Task);
+                    task = new Task();
                     task.createdBy = createdBy;
                     task.responsible = responsible;
                     task.description = description;
                     task.status = status;
                     task.priority = priority;
                     task.dueDate = new Date(dueDate);
-                    return [4 /*yield*/, (0, class_validator_1.validate)(task)];
+                    return [4 /*yield*/, validate(task)];
                 case 1:
                     errors = _c.sent();
                     if (errors.length > 0) {
@@ -184,7 +181,7 @@ var TaskController = /** @class */ (function () {
                 case 0:
                     id = request.params.id;
                     _b = request.body, responsible = _b.responsible, dueDate = _b.dueDate, priority = _b.priority, status = _b.status, description = _b.description;
-                    taskRepository = (0, typeorm_1.getRepository)(task_1.Task);
+                    taskRepository = getRepository(Task);
                     _c.label = 1;
                 case 1:
                     _c.trys.push([1, 3, , 4]);
@@ -214,7 +211,7 @@ var TaskController = /** @class */ (function () {
                     task.priority = priority || task.priority;
                     task.status = status || task.status;
                     task.description = description || task.description;
-                    return [4 /*yield*/, (0, class_validator_1.validate)(task)];
+                    return [4 /*yield*/, validate(task)];
                 case 7:
                     errors = _c.sent();
                     if (errors.length > 0) {
@@ -271,7 +268,7 @@ var TaskController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    userRepository = (0, typeorm_1.getRepository)(user_1.User);
+                    userRepository = getRepository(User);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -288,6 +285,6 @@ var TaskController = /** @class */ (function () {
     }); };
     return TaskController;
 }());
-exports.TaskController = TaskController;
-exports.default = TaskController;
+export { TaskController };
+export default TaskController;
 //# sourceMappingURL=task-controller.js.map

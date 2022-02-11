@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import moment = require("moment");
+import * as moment from "moment";
 import { getRepository } from "typeorm";
 import { Dashboard } from "../entity/dashboard";
 import { DashboardListResponse } from "../responses/dashboard-responses";

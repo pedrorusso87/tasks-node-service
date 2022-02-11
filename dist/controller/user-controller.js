@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,11 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserController = void 0;
-var typeorm_1 = require("typeorm");
-var user_1 = require("../entity/user");
-var class_validator_1 = require("class-validator");
+import { getRepository } from "typeorm";
+import { User } from "../entity/user";
+import { validate } from "class-validator";
 var UserController = /** @class */ (function () {
     function UserController() {
     }
@@ -50,7 +47,7 @@ var UserController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    userRepository = (0, typeorm_1.getRepository)(user_1.User);
+                    userRepository = getRepository(User);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -79,7 +76,7 @@ var UserController = /** @class */ (function () {
             switch (_b.label) {
                 case 0:
                     id = request.params.id;
-                    userRepository = (0, typeorm_1.getRepository)(user_1.User);
+                    userRepository = getRepository(User);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -101,12 +98,12 @@ var UserController = /** @class */ (function () {
             switch (_c.label) {
                 case 0:
                     _b = request.body, username = _b.username, password = _b.password, role = _b.role;
-                    userRepository = (0, typeorm_1.getRepository)(user_1.User);
-                    user = new user_1.User();
+                    userRepository = getRepository(User);
+                    user = new User();
                     user.username = username;
                     user.password = password;
                     user.role = role;
-                    return [4 /*yield*/, (0, class_validator_1.validate)(user)];
+                    return [4 /*yield*/, validate(user)];
                 case 1:
                     errors = _c.sent();
                     if (errors.length > 0) {
@@ -138,7 +135,7 @@ var UserController = /** @class */ (function () {
                 case 0:
                     id = request.params.id;
                     _b = request.body, username = _b.username, role = _b.role;
-                    userRepository = (0, typeorm_1.getRepository)(user_1.User);
+                    userRepository = getRepository(User);
                     _c.label = 1;
                 case 1:
                     _c.trys.push([1, 3, , 4]);
@@ -154,7 +151,7 @@ var UserController = /** @class */ (function () {
                 case 4:
                     user.username = username;
                     user.role = role;
-                    return [4 /*yield*/, (0, class_validator_1.validate)(user)];
+                    return [4 /*yield*/, validate(user)];
                 case 5:
                     errors = _c.sent();
                     if (errors.length > 0) {
@@ -186,7 +183,7 @@ var UserController = /** @class */ (function () {
             switch (_b.label) {
                 case 0:
                     id = request.params.id;
-                    userRepository = (0, typeorm_1.getRepository)(user_1.User);
+                    userRepository = getRepository(User);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -210,6 +207,6 @@ var UserController = /** @class */ (function () {
     }); };
     return UserController;
 }());
-exports.UserController = UserController;
-exports.default = UserController;
+export { UserController };
+export default UserController;
 //# sourceMappingURL=user-controller.js.map

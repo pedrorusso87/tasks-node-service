@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,11 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PriorityController = void 0;
-var class_validator_1 = require("class-validator");
-var typeorm_1 = require("typeorm");
-var priority_1 = require("../entity/priority");
+import { validate } from "class-validator";
+import { getRepository } from "typeorm";
+import { Priority } from "../entity/priority";
 var PriorityController = /** @class */ (function () {
     function PriorityController() {
     }
@@ -50,7 +47,7 @@ var PriorityController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    prioritiesRepository = (0, typeorm_1.getRepository)(priority_1.Priority);
+                    prioritiesRepository = getRepository(Priority);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -80,7 +77,7 @@ var PriorityController = /** @class */ (function () {
                 case 0:
                     id = request.params.id;
                     description = request.body.description;
-                    prioritiesRepository = (0, typeorm_1.getRepository)(priority_1.Priority);
+                    prioritiesRepository = getRepository(Priority);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -95,7 +92,7 @@ var PriorityController = /** @class */ (function () {
                         })];
                 case 4:
                     priority.description = description;
-                    return [4 /*yield*/, (0, class_validator_1.validate)(priority)];
+                    return [4 /*yield*/, validate(priority)];
                 case 5:
                     errors = _b.sent();
                     if (errors.length > 0) {
@@ -123,6 +120,6 @@ var PriorityController = /** @class */ (function () {
     }); };
     return PriorityController;
 }());
-exports.PriorityController = PriorityController;
-exports.default = PriorityController;
+export { PriorityController };
+export default PriorityController;
 //# sourceMappingURL=priority-controller.js.map

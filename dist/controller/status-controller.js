@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,11 +34,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.StatusController = void 0;
-var class_validator_1 = require("class-validator");
-var typeorm_1 = require("typeorm");
-var status_1 = require("../entity/status");
+import { validate } from "class-validator";
+import { getRepository } from "typeorm";
+import { Status } from "../entity/status";
 var StatusController = /** @class */ (function () {
     function StatusController() {
     }
@@ -50,7 +47,7 @@ var StatusController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    statusRepository = (0, typeorm_1.getRepository)(status_1.Status);
+                    statusRepository = getRepository(Status);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -81,7 +78,7 @@ var StatusController = /** @class */ (function () {
                 case 0:
                     id = request.params.id;
                     description = request.body.description;
-                    statusRepository = (0, typeorm_1.getRepository)(status_1.Status);
+                    statusRepository = getRepository(Status);
                     _b.label = 1;
                 case 1:
                     _b.trys.push([1, 3, , 4]);
@@ -96,7 +93,7 @@ var StatusController = /** @class */ (function () {
                         })];
                 case 4:
                     status.description = description;
-                    return [4 /*yield*/, (0, class_validator_1.validate)(status)];
+                    return [4 /*yield*/, validate(status)];
                 case 5:
                     errors = _b.sent();
                     if (errors.length > 0) {
@@ -127,11 +124,11 @@ var StatusController = /** @class */ (function () {
         return __generator(_a, function (_b) {
             switch (_b.label) {
                 case 0:
-                    statusRepository = (0, typeorm_1.getRepository)(status_1.Status);
+                    statusRepository = getRepository(Status);
                     description = request.body.description;
-                    status = new status_1.Status();
+                    status = new Status();
                     status.description = description;
-                    return [4 /*yield*/, (0, class_validator_1.validate)(status)];
+                    return [4 /*yield*/, validate(status)];
                 case 1:
                     errors = _b.sent();
                     if (errors.length > 0) {
@@ -157,6 +154,6 @@ var StatusController = /** @class */ (function () {
     }); };
     return StatusController;
 }());
-exports.StatusController = StatusController;
-exports.default = StatusController;
+export { StatusController };
+export default StatusController;
 //# sourceMappingURL=status-controller.js.map

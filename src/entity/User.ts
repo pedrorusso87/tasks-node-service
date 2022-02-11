@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from "typeorm";
-import { MinLength, IsNotEmpty, Min } from "class-validator";
+import { MinLength, IsNotEmpty } from "class-validator";
 import { Task } from "./task";
 import { Dashboard } from "./dashboard";
 @Entity()

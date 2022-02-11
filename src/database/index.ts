@@ -4,7 +4,7 @@ require("dotenv").config();
 
 const config: any = {
   type: "postgres",
-  //url: process.env.DATABASE_URL,
+  url: process.env.DATABASE_URL,
   host: process.env.TYPEORM_HOST,
   port: process.env.TYPEORM_PORT || 5432,
   username: process.env.TYPEORM_USERNAME || "postgres",

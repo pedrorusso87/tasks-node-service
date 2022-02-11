@@ -12,7 +12,7 @@ const config: any = {
   database: process.env.TYPEORM_DATABASE || "tasks",
   synchronize: process.env.TYPEORM_SYNCHRONIZE,
   ssl: true,
-  entities: ["src/entity/*{.ts, .js}"],
+  entities: [__dirname + "/**/*{.ts, .js}"],
   migrations: ["src/migration/**/*.ts"],
   cli: {
     entitiesDir: "src/entity",

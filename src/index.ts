@@ -1,5 +1,4 @@
 import "reflect-metadata";
-import { createConnection } from "typeorm";
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -18,5 +17,6 @@ app.use(express.json());
 app.use("/", routes);
 
 app.listen(PORT, () => {
+  console.log(__dirname);
   console.log(`Server running on port ${PORT}`);
 });

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import auth from "./auth";
-import user from "./User";
+import user from "./user";
 import priorities from "./priority";
 import status from "./status";
 import tasks from "./task";

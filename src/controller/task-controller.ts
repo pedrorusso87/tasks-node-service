@@ -1,9 +1,9 @@
 import { validate } from "class-validator";
 import { Request, Response } from "express";
-import moment = require("moment");
+const moment = require("moment");
 import { getRepository } from "typeorm";
 import { Task } from "../entity/task";
-import { User } from "../entity/user";
+import { User } from "../entity/User";
 import { GetTasksByDashboardResponse } from "../responses/tasks-responses";
 
 export class TaskController {

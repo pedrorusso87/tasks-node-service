@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { User } from "./user";
+import { User } from "./User";
 
 @Entity("dashboards")
 export class Dashboard {

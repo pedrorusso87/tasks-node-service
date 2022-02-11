@@ -10,7 +10,8 @@ import {
 import { MinLength, IsNotEmpty } from "class-validator";
 import { Task } from "./task";
 import { Dashboard } from "./dashboard";
-@Entity()
+
+@Entity("users")
 @Unique(["username"])
 export class User {
   @PrimaryGeneratedColumn()

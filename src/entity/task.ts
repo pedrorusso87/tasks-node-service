@@ -9,7 +9,7 @@ import {
 import { IsNotEmpty } from "class-validator";
 import { Status } from "./status";
 import { Priority } from "./priority";
-import { User } from "./user";
+import { User } from "./User";
 import { Dashboard } from "./dashboard";
 
 @Entity("tasks")

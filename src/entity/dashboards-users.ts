@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 import { Dashboard } from "./dashboard";
-import { User } from "./user";
+import { User } from "./User";
 
 @Entity("dashboards_users")
 // This table is for storing the dashboards per user

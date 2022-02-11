@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
 import { Request, Response } from "express";
-import { User } from "../entity/user";
+import { User } from "../entity/User";
 
 class AuthController {
   static login = async (req: Request, res: Response) => {

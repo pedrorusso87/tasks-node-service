@@ -16,7 +16,7 @@ export class PriorityController {
       }
     } catch (e) {
       return response.status(500).json({
-        message: "There was an error in the application.",
+        message: "There was an error in the application. " + e,
       });
     }
   };

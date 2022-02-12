@@ -1,4 +1,5 @@
 import { createConnection } from "typeorm";
+import { User } from "../entity/User";
 
 require("dotenv").config();
 const prod = process.env.NODE;
@@ -13,7 +14,7 @@ const config: any = {
   synchronize: true,
   ssl: true,
   tls: { rejectUnauthorized: false },
-  entities: ["src/entity/*{.ts, .js}"],
+  entities: [User],
   migrations: ["src/migration/**/*.ts"],
   cli: {
     entitiesDir: "src/entity",

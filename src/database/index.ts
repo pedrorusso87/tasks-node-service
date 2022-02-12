@@ -12,6 +12,7 @@ const config: any = {
   database: process.env.TYPEORM_DATABASE || "tasks",*/
   synchronize: true,
   ssl: true,
+  tls: { rejectUnauthorized: false },
   entities: ["/../**/*{.ts, .js}"],
   migrations: ["src/migration/**/*.ts"],
   cli: {

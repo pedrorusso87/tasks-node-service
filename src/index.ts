@@ -18,5 +18,6 @@ app.use("/", routes);
 
 app.listen(PORT, () => {
   console.log(__dirname);
+  console.log(process.env);
   console.log(`Server running on port ${PORT}`);
 });

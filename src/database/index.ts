@@ -13,7 +13,7 @@ const config: any = {
   synchronize: true,
   ssl: true,
   tls: { rejectUnauthorized: false },
-  entities: [__dirname + "**/*{.ts, .js}"],
+  entities: [__dirname + "/entity/*{.ts, .js}"],
   migrations: ["src/migration/**/*.ts"],
   cli: {
     entitiesDir: "src/entity",

@@ -17,7 +17,7 @@ app.use(express.json());
 app.use("/", routes);
 
 app.listen(PORT, () => {
-  console.log(__dirname);
+  console.log(__dirname + "/entity/*{.ts, .js}");
   console.log(process.env.DATABASE_URL);
   console.log(`Server running on port ${PORT}`);
 });

@@ -11,7 +11,7 @@ const config: any = {
   password: process.env.TYPEORM_PASSWORD || "root",
   database: process.env.TYPEORM_DATABASE || "tasks",*/
   synchronize: true,
-  //ssl: true,
+  ssl: true,
   entities: [__dirname + "/../**/*{.ts, .js}"],
   migrations: ["src/migration/**/*.ts"],
   cli: {

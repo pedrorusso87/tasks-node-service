@@ -29,7 +29,7 @@ export class TaskController {
       });
       if (tasks.length > 0) {
         getTasksResponse = TaskController.parseGetTaskResponse(tasks);
-        response.send(tasks);
+        response.send(getTasksResponse);
       } else {
         return response.status(404).json({ message: "No tasks found." });
       }

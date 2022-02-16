@@ -1,16 +1,17 @@
 import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 import { User } from "../entities/User";
-import { validate } from "class-validator";
-
+import { PrismaClient } from "@prisma/client";
+import moment from "moment";
+const prisma = new PrismaClient();
 export class UserController {
   static getAll = async (request: Request, response: Response) => {
-    const userRepository = getRepository(User);
-
+    let userListResponse;
     try {
-      const users = await userRepository.find();
+      const users = await prisma.users.findMany();
       if (users.length > 0) {
-        response.send(users);
+        userListResponse = UserController.parseGetUsersResponse(users);
+        response.send(userListResponse);
       } else {
         return response.status(404).json({ message: "No users found." });
       }
@@ -23,10 +24,14 @@ export class UserController {
 
   static getUserById = async (request: Request, response: Response) => {
     const { id } = request.params;
-    const userRepository = getRepository(User);
 
     try {
-      const user = await userRepository.findOneOrFail(id);
+      const user = await prisma.users.findUnique({
+        where: {
+          id: id,
+        },
+        rejectOnNotFound: true,
+      });
       response.send(user);
     } catch (e) {
       return response.status(404).json({ message: "No user found." });
@@ -35,25 +40,20 @@ export class UserController {
 
   static createUser = async (request: Request, response: Response) => {
     const { username, password, role } = request.body;
-    const userRepository = getRepository(User);
-
-    const user = new User();
-
-    user.username = username;
-    user.password = password;
-    user.role = role;
-
-    const errors = await validate(user);
-
-    if (errors.length > 0) {
-      return response.status(400).json(errors);
-    }
 
     try {
-      await userRepository.save(user);
+      const user = await prisma.users.create({
+        data: {
+          username: username,
+          password: password,
+          role: role,
+          createdDate: new Date(),
+          lastModified: new Date(),
+        },
+      });
     } catch (e) {
       return response.status(409).json({
-        message: "Username already exists.",
+        message: "Username already exists." + e,
       });
     }
 
@@ -64,33 +64,7 @@ export class UserController {
   static modifyUser = async (request: Request, response: Response) => {
     const { id } = request.params;
     const { username, role } = request.body;
-    const userRepository = getRepository(User);
     let user: User;
-
-    try {
-      user = await userRepository.findOneOrFail(id);
-    } catch (e) {
-      return response.status(404).json({
-        message: "User not found.",
-      });
-    }
-
-    user.username = username;
-    user.role = role;
-
-    const errors = await validate(user);
-    if (errors.length > 0) {
-      return response.status(400).json(errors);
-    }
-
-    //Save updated user
-    try {
-      await userRepository.save(user);
-    } catch (e) {
-      return response.status(409).json({
-        message: "username already exists.",
-      });
-    }
 
     response.status(201).json({
       message: "User updated.",
@@ -99,20 +73,20 @@ export class UserController {
 
   static deleteUser = async (request: Request, response: Response) => {
     const { id } = request.params;
-    const userRepository = getRepository(User);
     let user: User;
 
-    try {
-      await userRepository.findOneOrFail(id);
-    } catch (e) {
-      return response.status(404).json({
-        message: "User not found.",
-      });
-    }
-    await userRepository.delete(id);
     return response.status(201).json({
       message: "User deleted.",
     });
+  };
+
+  static parseGetUsersResponse = (usersList) => {
+    usersList.map((user) => {
+      //formatting dates
+      user.lastModified = moment(user.lastModified).format("YYYY-MM-DD");
+      user.createdDate = moment(user.createdDate).format("YYYY-MM-DD");
+    });
+    return usersList;
   };
 }
 export default UserController;

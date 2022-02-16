@@ -1,6 +1,6 @@
 import { getRepository } from "typeorm";
 import { Request, Response } from "express";
-import { User } from "../entity/User";
+import { User } from "../entities/User";
 import { validate } from "class-validator";
 
 export class UserController {

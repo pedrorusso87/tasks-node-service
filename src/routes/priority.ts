@@ -5,6 +5,8 @@ const router = Router();
 
 router.get("/", PriorityController.getAll);
 
-router.patch("/:id", PriorityController.modifyPriority);
+/*TODO: check if we really want to expose this endpoint
+
+router.patch("/:id", PriorityController.modifyPriority);*/
 
 export default router;

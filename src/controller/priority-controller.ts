@@ -1,14 +1,10 @@
-import { validate } from "class-validator";
+import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
-import { Priority } from "../entity/priority";
-
+const prisma = new PrismaClient();
 export class PriorityController {
   static getAll = async (request: Request, response: Response) => {
-    const prioritiesRepository = getRepository(Priority);
-
     try {
-      const priorities = await prioritiesRepository.find();
+      const priorities = await prisma.priority.findMany();
       if (priorities.length > 0) {
         response.send(priorities);
       } else {
@@ -21,7 +17,7 @@ export class PriorityController {
     }
   };
 
-  static modifyPriority = async (request: Request, response: Response) => {
+  /*static modifyPriority = async (request: Request, response: Response) => {
     const { id } = request.params;
     const { description } = request.body;
     const prioritiesRepository = getRepository(Priority);
@@ -54,7 +50,7 @@ export class PriorityController {
     response.status(201).json({
       message: "Priority updated.",
     });
-  };
+  };*/
 }
 
 export default PriorityController;

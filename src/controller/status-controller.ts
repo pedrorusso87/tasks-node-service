@@ -1,14 +1,12 @@
+import { PrismaClient } from "@prisma/client";
 import { validate } from "class-validator";
 import { Request, Response } from "express";
-import { getRepository } from "typeorm";
-import { Status } from "../entity/status";
-
+import { Status } from "../entities/status";
+const prisma = new PrismaClient();
 export class StatusController {
   static getAll = async (request: Request, response: Response) => {
-    const statusRepository = getRepository(Status);
-
     try {
-      const statuses = await statusRepository.find();
+      const statuses = await prisma.status.findMany();
       if (statuses.length > 0) {
         response.send(statuses);
       } else {
@@ -22,7 +20,7 @@ export class StatusController {
     }
   };
 
-  static modifyStatus = async (request: Request, response: Response) => {
+  /*static modifyStatus = async (request: Request, response: Response) => {
     const { id } = request.params;
     const { description } = request.body;
     const statusRepository = getRepository(Status);
@@ -78,7 +76,7 @@ export class StatusController {
     }
 
     response.status(201).json({ message: "Status created" });
-  };
+  };*/
 }
 
 export default StatusController;

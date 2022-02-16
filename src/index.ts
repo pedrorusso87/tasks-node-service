@@ -4,7 +4,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 require("dotenv").config();
 import routes from "./routes";
-import "./database";
+import { PrismaClient } from "@prisma/client";
 
 const PORT = process.env.PORT || 3000;
 
@@ -17,7 +17,6 @@ app.use(express.json());
 app.use("/", routes);
 
 app.listen(PORT, () => {
-  console.log(__dirname + "/entity/*{.ts, .js}");
-  console.log(process.env.DATABASE_URL);
   console.log(`Server running on port ${PORT}`);
 });
+//npx prisma migrate dev

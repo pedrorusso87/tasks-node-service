@@ -1,23 +1,35 @@
+import { PrismaClient } from "@prisma/client";
 import { validate } from "class-validator";
 import { Request, Response } from "express";
-const moment = require("moment");
-import { getRepository } from "typeorm";
-import { Task } from "../entity/task";
-import { User } from "../entity/User";
+import { Task } from "../entities/task";
 import { GetTasksByDashboardResponse } from "../responses/tasks-responses";
-
+const moment = require("moment");
+const prisma = new PrismaClient();
 export class TaskController {
   static getAll = async (request: Request, response: Response) => {
-    const repository = getRepository(Task);
     let getTasksResponse;
-
     try {
-      const tasks: Task[] = await repository.find({
-        relations: ["responsible", "status", "priority"],
+      const tasks = await prisma.task.findMany({
+        include: {
+          responsible: {
+            select: {
+              username: true,
+              role: true,
+            },
+          },
+          status: true,
+          priority: true,
+          createdBy: {
+            select: {
+              username: true,
+              role: true,
+            },
+          },
+        },
       });
       if (tasks.length > 0) {
         getTasksResponse = TaskController.parseGetTaskResponse(tasks);
-        response.send(getTasksResponse);
+        response.send(tasks);
       } else {
         return response.status(404).json({ message: "No tasks found." });
       }
@@ -32,12 +44,15 @@ export class TaskController {
     request: Request,
     response: Response
   ) => {
-    const repository = getRepository(Task);
-    const id = request.params;
+    const taskId = request.params.toString();
 
     try {
-      const tasks: Task[] = await repository.find({ dashboard: id });
-
+      const tasks = await prisma.task.findUnique({
+        where: {
+          id: taskId,
+        },
+      });
+      console.log(tasks);
       return response
         .status(200)
         .send(TaskController.parseGetByDashboardResponse(tasks));
@@ -49,22 +64,24 @@ export class TaskController {
   };
 
   static deleteTask = async (request: Request, response: Response) => {
-    const taskRepository = getRepository(Task);
     const { id } = request.params;
-    let task: Task;
+    let task;
 
     try {
-      task = await taskRepository.findOneOrFail(id);
-    } catch (e) {
-      return response.status(404).json({
-        message: "Task not found.",
+      task = await prisma.task.delete({
+        where: {
+          id: id.toString(),
+        },
+        select: {
+          id: true,
+        },
       });
-    }
-
-    //delete task
-    try {
-      taskRepository.delete(id);
     } catch (e) {
+      if (!task) {
+        return response.status(404).json({
+          message: "Task not found. " + e,
+        });
+      }
       return response.status(500).json({
         message: "Could not delete taks. " + e,
       });
@@ -75,18 +92,18 @@ export class TaskController {
   };
 
   static createTask = async (request: Request, response: Response) => {
-    const { responsible, createdBy, description, status, priority, dueDate } =
-      request.body;
-    const repository = getRepository(Task);
+    const {
+      responsibleId,
+      createdBy,
+      description,
+      status,
+      priority,
+      dueDate,
+      dashboardId,
+      createdDate,
+    } = request.body;
 
     const task = new Task();
-
-    task.createdBy = createdBy;
-    task.responsible = responsible;
-    task.description = description;
-    task.status = status;
-    task.priority = priority;
-    task.dueDate = new Date(dueDate);
 
     const errors = await validate(task);
     if (errors.length > 0) {
@@ -94,7 +111,38 @@ export class TaskController {
     }
 
     try {
-      await repository.save(task);
+      await prisma.task.create({
+        data: {
+          description: description,
+          createdBy: {
+            connect: {
+              id: createdBy,
+            },
+          },
+          status: {
+            connect: {
+              id: status,
+            },
+          },
+          priority: {
+            connect: {
+              id: priority,
+            },
+          },
+          responsible: {
+            connect: {
+              id: responsibleId,
+            },
+          },
+          dashboard: {
+            connect: {
+              id: dashboardId,
+            },
+          },
+          createdDate: createdDate,
+          dueDate: dueDate,
+        },
+      });
     } catch (e) {
       return response.status(500).json({
         message: "Error creating new task. " + e,
@@ -105,8 +153,8 @@ export class TaskController {
     response.status(201).json({ message: "Task created" });
   };
 
-  static updateTask = async (request: Request, response: Response) => {
-    const { id } = request.params;
+  /*static updateTask = async (request: Request, response: Response) => {
+   const { id } = request.params;
     const { responsible, dueDate, priority, status, description } =
       request.body;
     const taskRepository = getRepository(Task);
@@ -124,7 +172,7 @@ export class TaskController {
     if (responsible) {
       const user = await TaskController.findUserForTaskUpdate(responsible);
       if (user) {
-        task.responsible = user;
+        task.responsible = user.username;
       } else {
         return response.status(404).json({ message: "No valid user selected" });
       }
@@ -151,18 +199,24 @@ export class TaskController {
     response.status(201).json({
       message: "Task updated.",
     });
-  };
+  };*/
 
   static parseGetTaskResponse = (taskList) => {
     taskList.map((task) => {
-      // deleting ids from response
-      delete task.responsible.id;
+      //deleting ids from response
+      delete task.responsibleId;
+      delete task.createdById;
+      delete task.statusId;
+      delete task.priorityId;
+      delete task.dashboardId;
+
+      //deleting ids from objects
       delete task.status.id;
       delete task.priority.id;
 
       //formatting dates
       task.dueDate = moment(task.dueDate).format("YYYY-MM-DD");
-      task.created_date = moment(task.created_date).format("YYYY-MM-DD");
+      task.createdDate = moment(task.createdDate).format("YYYY-MM-DD");
     });
     return taskList;
   };
@@ -180,18 +234,6 @@ export class TaskController {
       getTasksResponse.push(taskResponse);
     });
     return getTasksResponse;
-  };
-
-  static findUserForTaskUpdate = async (responsible: string) => {
-    let user: User;
-    const userRepository = getRepository(User);
-    try {
-      return (user = await userRepository.findOneOrFail({
-        where: { username: responsible },
-      }));
-    } catch (e) {
-      return null;
-    }
   };
 }
 export default TaskController;

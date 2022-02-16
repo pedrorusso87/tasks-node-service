@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 const moment = require("moment");
 import { getRepository } from "typeorm";
-import { Dashboard } from "../entity/dashboard";
-import { DashboardUser } from "../entity/dashboards-users";
+import { Dashboard } from "../entities/dashboard";
+import { DashboardUser } from "../entities/dashboards-users";
 import {
   DashboardByUserResponse,
   DashboardInformation,

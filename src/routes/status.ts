@@ -5,8 +5,9 @@ const router = Router();
 
 router.get("/", StatusController.getAll);
 
+/*TODO: check if we really want to expose these endpoints
 router.patch("/:id", StatusController.modifyStatus);
 
-router.post("/", StatusController.addStatus);
+router.post("/", StatusController.addStatus); */
 
 export default router;

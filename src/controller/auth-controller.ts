@@ -1,7 +1,7 @@
-import { getRepository } from "typeorm";
+import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { User } from "../entities/User";
-
+const prisma = new PrismaClient();
 class AuthController {
   static login = async (req: Request, res: Response) => {
     const { username, password } = req.body;
@@ -11,17 +11,22 @@ class AuthController {
         message: "Username and password are required.",
       });
     }
-
-    const userRepository = getRepository(User);
     let user: User;
 
     try {
-      user = await userRepository.findOneOrFail({
-        where: { username },
+      user = await prisma.users.findUnique({
+        where: {
+          username: username,
+        },
       });
+      if (!user) {
+        return res.status(400).json({
+          message: "Username or password are invalid.",
+        });
+      }
     } catch (e) {
-      return res.status(400).json({
-        message: "Username or password are invalid.",
+      return res.status(500).json({
+        message: "There was an error in the application. " + e,
       });
     }
 

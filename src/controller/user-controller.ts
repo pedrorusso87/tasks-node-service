@@ -1,4 +1,3 @@
-import { getRepository } from "typeorm";
 import { Request, Response } from "express";
 import { User } from "../entities/User";
 import { PrismaClient } from "@prisma/client";
@@ -53,7 +52,9 @@ export class UserController {
       });
     } catch (e) {
       return response.status(409).json({
-        message: "Username already exists." + e,
+        message: e,
+        errorCode: e.code,
+        errorMessage: e.message,
       });
     }
 
@@ -64,8 +65,22 @@ export class UserController {
   static modifyUser = async (request: Request, response: Response) => {
     const { id } = request.params;
     const { username, role } = request.body;
-    let user: User;
-
+    try {
+      const updatedUser = await prisma.users.update({
+        where: {
+          id: id.toString(),
+        },
+        data: {
+          role: role,
+          lastModified: new Date(),
+          username: username,
+        },
+      });
+    } catch (e) {
+      response.status(500).json({
+        message: e,
+      });
+    }
     response.status(201).json({
       message: "User updated.",
     });
@@ -75,6 +90,17 @@ export class UserController {
     const { id } = request.params;
     let user: User;
 
+    try {
+      user = await prisma.users.delete({
+        where: {
+          id: id,
+        },
+      });
+    } catch (e) {
+      response.status(500).json({
+        message: e,
+      });
+    }
     return response.status(201).json({
       message: "User deleted.",
     });

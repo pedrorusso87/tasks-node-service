@@ -1,16 +1,20 @@
+import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 const moment = require("moment");
-import { getRepository } from "typeorm";
-import { Dashboard } from "../entities/dashboard";
 import { DashboardListResponse } from "../responses/dashboard-responses";
-
+const prisma = new PrismaClient();
 class DashboardController {
   static getAll = async (request: Request, response: Response) => {
-    const dashboardRepository = getRepository(Dashboard);
     let getDashboardsResponse;
     try {
-      const dashboardList: Dashboard[] = await dashboardRepository.find({
-        relations: ["owner"],
+      const dashboardList = await prisma.dashboard.findMany({
+        include: {
+          owner: {
+            select: {
+              username: true,
+            },
+          },
+        },
       });
       if (dashboardList.length > 0) {
         getDashboardsResponse =
@@ -27,11 +31,19 @@ class DashboardController {
   };
 
   static getDashboardById = async (request: Request, response: Response) => {
-    const dashboardRepository = getRepository(Dashboard);
+    const { id } = request.params;
     try {
-      const dashboard: Dashboard = await dashboardRepository.findOne(
-        request.params
-      );
+      const dashboard = await prisma.dashboard.findUnique({
+        where: { id: id },
+        include: {
+          owner: {
+            select: {
+              username: true,
+              createdDate: true,
+            },
+          },
+        },
+      });
       if (dashboard) {
         response.send(dashboard);
       } else {
@@ -44,7 +56,7 @@ class DashboardController {
     }
   };
 
-  static parseTaskResponse = (dashboardList: Dashboard[]) => {
+  static parseTaskResponse = (dashboardList) => {
     let dashboardListResponse = [] as DashboardListResponse[];
     dashboardList.map((dashboard) => {
       let dashboardResponse = {} as DashboardListResponse;

@@ -1,55 +1,68 @@
+import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 const moment = require("moment");
-import { getRepository } from "typeorm";
-import { Dashboard } from "../entities/dashboard";
-import { DashboardUser } from "../entities/dashboards-users";
 import {
   DashboardByUserResponse,
   DashboardInformation,
 } from "../responses/dashboard-responses";
+const prisma = new PrismaClient();
 export class DashboardUsersController {
-  static getDashboardsByUserId = async (
-    request: Request,
-    response: Response
-  ) => {
-    const repository = getRepository(DashboardUser);
-    const userId = request.params;
+  static getDashboardsByUserId = async (req: Request, res: Response) => {
+    const userId = req.params.id;
     let dashboardByUserResponse: DashboardByUserResponse =
       {} as DashboardByUserResponse;
-
     try {
-      const dashboardsUser: DashboardUser[] = await repository.find({
-        relations: ["dashboard"],
+      const dashboardsUser = await prisma.dashboardUser.findMany({
         where: {
-          user: userId,
+          userId: userId,
+        },
+        include: {
+          dashboard: {
+            select: {
+              name: true,
+            },
+          },
+          user: {
+            select: {
+              username: true,
+            },
+          },
         },
       });
-
-      if (dashboardsUser) {
+      if (dashboardsUser.length > 0) {
         dashboardByUserResponse.dashboards =
           DashboardUsersController.parseDashboardResponse(dashboardsUser);
-        response.send(dashboardByUserResponse);
+        res.send(dashboardByUserResponse);
       } else {
-        response.status(404).json({ message: "No boards found for user." });
+        res.status(404).json({ message: "No boards found for user." });
       }
-      response.send(dashboardsUser);
     } catch (e) {
-      response.send(e);
+      return res.status(500).json({
+        message: "There was an error in the application. " + e,
+      });
     }
   };
 
-  static parseDashboardResponse = (dashboardsUser: DashboardUser[]) => {
+  static parseDashboardResponse = (dashboardsUser) => {
     const dashboardInformationArray = [];
     dashboardsUser.map((dashboardUser) => {
-      const dashboard: Dashboard = dashboardUser.dashboard;
-      const name = dashboard.name;
-      const createdDate = moment(dashboard.createdDate).format("YYYY-MM-DD");
-      const modifiedDate = moment(dashboard.modifiedDate).format("YYYY-MM-DD");
+      const name = dashboardUser.dashboard.name;
+      const username = dashboardUser.user.username;
+      const createdDate = moment(dashboardUser.dashboard.createdDate).format(
+        "YYYY-MM-DD"
+      );
+      const modifiedDate = moment(dashboardUser.dashboard.modifiedDate).format(
+        "YYYY-MM-DD"
+      );
 
       const dashboardInformation: DashboardInformation = {
         name,
         createdDate,
         modifiedDate,
+        owner: {
+          username: username,
+          role: "",
+        },
       };
       dashboardInformationArray.push(dashboardInformation);
     });

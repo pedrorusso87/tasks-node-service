@@ -17,4 +17,8 @@ export class DashboardInformation {
   name: string;
   createdDate: string;
   modifiedDate: string;
+  owner: {
+    username: string;
+    role: string;
+  };
 }

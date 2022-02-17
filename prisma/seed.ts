@@ -62,6 +62,7 @@ async function main() {
       createdDate: new Date(),
       username: "admin",
       role: "admin",
+      password: "test123",
     },
   });
 
@@ -71,6 +72,7 @@ async function main() {
       createdDate: new Date(),
       username: "user",
       role: "user",
+      password: "test123",
     },
   });
 }

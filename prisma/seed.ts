@@ -75,6 +75,29 @@ async function main() {
       password: "test123",
     },
   });
+
+  //Dashboard insertion
+  const dashboard = await prisma.dashboard.create({
+    data: {
+      id: "ckzrbhl920066g8vee57u243c",
+      name: "test dashboard",
+      ownerId: "ckzoy10nv0178xwvet7z19i36",
+    },
+  });
+  //Tasks insertion
+  const taskTest = await prisma.task.create({
+    data: {
+      description: "test task",
+      id: "ckzrdn1hc0106q4ve5tpzzlmo",
+      createdDate: new Date(),
+      dueDate: new Date(),
+      responsibleId: "ckzoy10nv0176xwve650ju1os",
+      createdById: "ckzoy10nv0178xwvet7z19i36",
+      statusId: "ckzoxvehl0106xwve8ny3k40d",
+      priorityId: "ckzoxacpk0024xwve7i0c54cu",
+      dashboardId: "ckzrbhl920066g8vee57u243c",
+    },
+  });
 }
 
 main()

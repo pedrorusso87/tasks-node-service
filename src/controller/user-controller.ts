@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { User } from "../entities/User";
 import { PrismaClient } from "@prisma/client";
 import moment from "moment";
+import * as bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 export class UserController {
   static getAll = async (request: Request, response: Response) => {
@@ -44,7 +45,7 @@ export class UserController {
       const user = await prisma.users.create({
         data: {
           username: username,
-          password: password,
+          password: UserController.hashPassword(password),
           role: role,
           createdDate: new Date(),
           lastModified: new Date(),
@@ -113,6 +114,11 @@ export class UserController {
       user.createdDate = moment(user.createdDate).format("YYYY-MM-DD");
     });
     return usersList;
+  };
+
+  static hashPassword = (password) => {
+    const salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
   };
 }
 export default UserController;

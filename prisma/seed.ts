@@ -1,8 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
-
+import * as bcrypt from "bcryptjs";
 // generating dummy records for db migration
 async function main() {
+  const salt = bcrypt.genSalt(10);
   // Priorities insertion
   const high = await prisma.priority.create({
     data: {
@@ -55,24 +56,44 @@ async function main() {
     },
   });
 
+  //user status insertion
+  const active = await prisma.userStatus.create({
+    data: {
+      id: "ckzual8pp00215wveqxr3irxb",
+      description: "ACTIVE",
+    },
+  });
+  const deleted = await prisma.userStatus.create({
+    data: {
+      id: "ckzual8pp00195wvelk0vuo51",
+      description: "DELETED",
+    },
+  });
+
   //users insertion
+  const adminPassword = hashPassword("admin123");
   const admin = await prisma.users.create({
     data: {
       id: "ckzoy10nv0178xwvet7z19i36",
       createdDate: new Date(),
       username: "admin",
       role: "admin",
-      password: "test123",
+      password: adminPassword,
+      statusId: "ckzual8pp00215wveqxr3irxb",
+      lastLoginDate: new Date(),
     },
   });
 
+  const userPassword = hashPassword("user123");
   const user = await prisma.users.create({
     data: {
       id: "ckzoy10nv0176xwve650ju1os",
       createdDate: new Date(),
       username: "user",
       role: "user",
-      password: "test123",
+      password: userPassword,
+      statusId: "ckzual8pp00215wveqxr3irxb",
+      lastLoginDate: new Date(),
     },
   });
 
@@ -84,6 +105,7 @@ async function main() {
       ownerId: "ckzoy10nv0178xwvet7z19i36",
     },
   });
+
   //Tasks insertion
   const taskTest = await prisma.task.create({
     data: {
@@ -98,6 +120,20 @@ async function main() {
       dashboardId: "ckzrbhl920066g8vee57u243c",
     },
   });
+
+  //user dashboard insertion
+  const userDashboard = await prisma.dashboardUser.create({
+    data: {
+      id: "ckzuaqie601955wve83tjuo4f",
+      userId: "ckzoy10nv0176xwve650ju1os",
+      dashboardId: "ckzrbhl920066g8vee57u243c",
+    },
+  });
+}
+
+function hashPassword(password): string {
+  const salt = bcrypt.genSaltSync(10);
+  return bcrypt.hashSync(password, salt);
 }
 
 main()

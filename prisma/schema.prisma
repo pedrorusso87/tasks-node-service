@@ -31,6 +31,9 @@ model Users {
   role          String
   createdDate   DateTime        @default(now()) @map("created_date")
   lastModified  DateTime        @default(now()) @map("last_modified")
+  lastLoginDate DateTime        @default(now()) @map("last_login_date")
+  statusId      String          @map("status_id")
+  satus         UserStatus      @relation(fields: [statusId], references: [id])
   dashboards    Dashboard[]
   dashboardUser DashboardUser[]
   CreatedBy     Task[]          @relation("CreatedBy")
@@ -66,4 +69,10 @@ model Priority {
   id          String @id @default(cuid())
   description String
   tasks       Task[]
+}
+
+model UserStatus {
+  id          String @id @default(cuid())
+  description String
+  users       Users[]
 }

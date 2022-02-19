@@ -39,7 +39,22 @@ export class UserController {
   };
 
   static createUser = async (request: Request, response: Response) => {
-    const { username, password, role } = request.body;
+    const { username, password, role, statusId } = request.body;
+    let status;
+    if (!statusId) {
+      try {
+        const userStatus = await prisma.userStatus.findFirst({
+          where: {
+            description: "ACTIVE",
+          },
+        });
+        status = userStatus;
+      } catch (e) {
+        return response.status(500).json({
+          message: e,
+        });
+      }
+    }
 
     try {
       const user = await prisma.users.create({
@@ -49,6 +64,7 @@ export class UserController {
           role: role,
           createdDate: new Date(),
           lastModified: new Date(),
+          statusId: statusId || status.statusId || "",
         },
       });
     } catch (e) {

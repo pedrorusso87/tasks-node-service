@@ -2,6 +2,8 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import { User } from "../entities/User";
 import * as bcrypt from "bcryptjs";
+import { UserLoginResponse } from "../responses/login-responses";
+import moment from "moment";
 const prisma = new PrismaClient();
 class AuthController {
   static login = async (req: Request, res: Response) => {
@@ -19,6 +21,13 @@ class AuthController {
         where: {
           username: username,
         },
+        include: {
+          satus: {
+            select: {
+              description: true,
+            },
+          },
+        },
       });
       if (!user) {
         return res.status(400).json({
@@ -26,7 +35,7 @@ class AuthController {
         });
       } else {
         if (AuthController.checkPassword(password, user.password)) {
-          res.send(user);
+          res.send(AuthController.parseLoginResponse(user));
         } else {
           return res.status(400).json({
             message: "Username or password are invalid.",
@@ -42,6 +51,17 @@ class AuthController {
 
   static checkPassword = (password, encryptedPassword) => {
     return bcrypt.compareSync(password, encryptedPassword);
+  };
+
+  static parseLoginResponse = (user) => {
+    let response = {
+      username: user.username,
+      role: user.role,
+      createdDate: moment(user.createdDate).format("DD-MM-YYYY"),
+      lastLoginDate: moment(user.lastLoginDate).format("DD-MM-YYYY"),
+      status: user.satus.description,
+    } as UserLoginResponse;
+    return response;
   };
 }
 export default AuthController;

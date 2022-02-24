@@ -6,6 +6,6 @@ const router = Router();
 
 router.get("/", DashboardController.getAll);
 router.get("/:id", DashboardController.getDashboardById);
-router.get("/user/:id", DashboardUsersController.getDashboardsByUserId);
+router.get("/username/:username", DashboardUsersController.getDashboardsByUsername);
 
 export default router;

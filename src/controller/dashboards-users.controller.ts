@@ -7,11 +7,25 @@ import {
 } from "../responses/dashboard-responses";
 const prisma = new PrismaClient();
 export class DashboardUsersController {
-  static getDashboardsByUserId = async (req: Request, res: Response) => {
-    const userId = req.params.id;
+  static getDashboardsByUsername = async (req: Request, res: Response) => {
+    const username = req.params.username;
+    let userId;
     let dashboardByUserResponse: DashboardByUserResponse =
       {} as DashboardByUserResponse;
     try {
+      const user = await prisma.users.findUnique({
+        where: {
+          username: username
+        }
+      })
+      userId = user.id;
+    } catch(e) {
+      return res.status(500).json({
+        message: e
+      })
+    }
+    try {
+      console.log(userId)
       const dashboardsUser = await prisma.dashboardUser.findMany({
         where: {
           userId: userId,

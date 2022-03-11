@@ -17,6 +17,11 @@ export class TaskController {
               role: true,
             },
           },
+          dashboard: {
+            select: {
+              name: true,
+            },
+          },
           status: true,
           priority: true,
           createdBy: {

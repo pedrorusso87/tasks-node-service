@@ -76,7 +76,7 @@ async function main() {
     data: {
       id: "ckzoy10nv0178xwvet7z19i36",
       createdDate: new Date(),
-      username: "admin",
+      username: "admin@admintest.com",
       role: "admin",
       password: adminPassword,
       statusId: "ckzual8pp00215wveqxr3irxb",
@@ -89,7 +89,7 @@ async function main() {
     data: {
       id: "ckzoy10nv0176xwve650ju1os",
       createdDate: new Date(),
-      username: "user",
+      username: "user@usertest.com",
       role: "user",
       password: userPassword,
       statusId: "ckzual8pp00215wveqxr3irxb",

@@ -15,17 +15,16 @@ export class DashboardUsersController {
     try {
       const user = await prisma.users.findUnique({
         where: {
-          username: username
-        }
-      })
+          username: username,
+        },
+      });
       userId = user.id;
-    } catch(e) {
+    } catch (e) {
       return res.status(500).json({
-        message: e
-      })
+        message: e,
+      });
     }
     try {
-      console.log(userId)
       const dashboardsUser = await prisma.dashboardUser.findMany({
         where: {
           userId: userId,

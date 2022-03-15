@@ -8,7 +8,15 @@ export class UserController {
   static getAll = async (request: Request, response: Response) => {
     let userListResponse;
     try {
-      const users = await prisma.users.findMany();
+      const users = await prisma.users.findMany({
+        select: {
+          username: true,
+          role: true,
+          lastLoginDate: true,
+          lastModified: true,
+          createdDate: true,
+        },
+      });
       if (users.length > 0) {
         userListResponse = UserController.parseGetUsersResponse(users);
         response.send(userListResponse);
@@ -125,9 +133,11 @@ export class UserController {
 
   static parseGetUsersResponse = (usersList) => {
     usersList.map((user) => {
+      console.log(user);
       //formatting dates
       user.lastModified = moment(user.lastModified).format("YYYY-MM-DD");
       user.createdDate = moment(user.createdDate).format("YYYY-MM-DD");
+      user.lastLoginDate = moment(user.createdDate).format("YYYY-MM-DD");
     });
     return usersList;
   };
